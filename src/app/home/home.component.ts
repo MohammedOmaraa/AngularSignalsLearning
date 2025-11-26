@@ -2,6 +2,9 @@ import { Component, signal } from '@angular/core';
 
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
+type Counter = {
+  value: number;
+};
 @Component({
   standalone: true,
   selector: 'home',
@@ -10,14 +13,18 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  counter = signal(10);
-  counterSignalReadonly = signal(10).asReadonly();
-  increment() {
-    this.counter.set(this.counter());
-    this.counter.update((current) => current + 1);
+  counter = signal<Counter>({ value: 10 });
 
-    // Error
-    // this.counterSignalReadonly.set(this.counter())
-    // this.counterSignalReadonly.update((current) => current + 1);
+  increment() {
+    // use default change detection
+    // ❌ this work successfully but don't use this
+    this.counter().value++;
+
+    console.log(this.counter().value);
+
+    // ✅ use signal-based change detection (Better Way)
+    this.counter.update((counter) => {
+      return { ...counter, value: counter.value + 1 };
+    });
   }
 }
