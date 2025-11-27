@@ -1,3 +1,4 @@
+import { afterNextRender, effect, inject, Injector } from '@angular/core';
 import { Component, computed, signal } from '@angular/core';
 
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
@@ -10,20 +11,21 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  injector = inject(Injector);
+  //  error when create effect at runtime this lead to memory leak
+  //  so passing injector to handle memory
+  constructor() {
+    afterNextRender(() => {
+      effect(
+        () => {
+          console.log(`counter value: ${this.counter()}`);
+        },
+        { injector: this.injector }
+      );
+    });
+  }
+
   counter = signal(0);
-
-  tenXCounter = computed(() => {
-    const value = this.counter();
-    // this line make error as infinity loop
-    // weird situation 100 x counter depends on ten x counter, but ten x counter also depends on 100 x counter.
-    //❌ this.hundredXCounter();
-    return value * 10;
-  });
-
-  hundredXCounter = computed(() => {
-    const value = this.tenXCounter();
-    return value * 10;
-  });
 
   increment() {
     this.counter.update((c) => c + 1);
