@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
@@ -10,27 +10,22 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  values = signal<number[]>([10, 20, 30]);
+  counter = signal(0);
 
-  append() {
-    // use default change detection
-    // ❌ this work successfully but don't use this
-    // const values = this.values();
-    // const last = values[values.length - 1];
-    // values.push(last + 10);
+  tenXCounter = computed(() => {
+    const value = this.counter();
+    // this line make error as infinity loop
+    // weird situation 100 x counter depends on ten x counter, but ten x counter also depends on 100 x counter.
+    //❌ this.hundredXCounter();
+    return value * 10;
+  });
 
-    //  -----------------------------------------------
+  hundredXCounter = computed(() => {
+    const value = this.tenXCounter();
+    return value * 10;
+  });
 
-    this.values.update((values) => {
-      // use default change detection
-      // ❌ this work successfully but don't use this
-
-      //   values.push(values[values.length - 1] + 10);
-      //   return values;
-
-      // ✅ use signal-based change detection (Better Way)
-
-      return [...values, values[values.length - 1] + 10];
-    });
+  increment() {
+    this.counter.update((c) => c + 1);
   }
 }
