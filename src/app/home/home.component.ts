@@ -1,4 +1,10 @@
-import { afterNextRender, effect, inject, Injector } from '@angular/core';
+import {
+  afterNextRender,
+  effect,
+  EffectRef,
+  inject,
+  Injector,
+} from '@angular/core';
 import { Component, computed, signal } from '@angular/core';
 
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
@@ -11,17 +17,26 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  injector = inject(Injector);
-  //  error when create effect at runtime this lead to memory leak
-  //  so passing injector to handle memory
+  effectRef: EffectRef | null = null;
+
   constructor() {
-    afterNextRender(() => {
-      effect(
-        () => {
-          console.log(`counter value: ${this.counter()}`);
-        },
-        { injector: this.injector }
-      );
+    this.effectRef = effect((onCleanup) => {
+      // ❌ not work
+      //   setTimeout(() => {
+      //     console.log(`counter value: ${this.counter()}`);
+      //   }, 1000);
+
+      // ✅
+      const value = this.counter(); // link signal with effect
+
+      const timeout = setTimeout(() => {
+        console.log(`counter value: ${value}`);
+      }, 1000);
+
+      onCleanup(() => {
+        console.log('Calling clean up');
+        clearTimeout(timeout);
+      });
     });
   }
 
@@ -29,5 +44,9 @@ export class HomeComponent {
 
   increment() {
     this.counter.update((c) => c + 1);
+  }
+
+  cleanup() {
+    this.effectRef?.destroy();
   }
 }
