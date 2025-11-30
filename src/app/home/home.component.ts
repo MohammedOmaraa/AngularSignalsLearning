@@ -1,18 +1,19 @@
 import { computed, effect, inject } from '@angular/core';
 import { Component, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { Course } from '../models/course.model';
+import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
+import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 
 @Component({
   standalone: true,
   selector: 'home',
-  imports: [MatTabGroup, MatTab],
+  imports: [MatTabGroup, MatTab, CoursesCardListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  private courses = signal<Course[]>([])
+  private courses = signal<Course[]>([]);
 
   biggenerCourses = computed(() =>
     this.courses().filter((c) => c.category == 'BEGINNER')
@@ -38,7 +39,7 @@ export class HomeComponent {
   async loadCourses() {
     try {
       const courses = await this.coursesService.loadAllCourses();
-      this.courses.set(courses);
+      this.courses.set(courses.sort(sortCoursesBySeqNo));
     } catch (err) {
       alert(`Error loading Courses!`);
       console.error(err);
