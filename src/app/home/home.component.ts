@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Component, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Course } from '../models/course.model';
-import { CoursesServiceWithFetch } from '../services/courses-fetch.service';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
   standalone: true,
@@ -14,7 +14,7 @@ import { CoursesServiceWithFetch } from '../services/courses-fetch.service';
 export class HomeComponent {
   courses = signal<Course[]>([]);
 
-  coursesService = inject(CoursesServiceWithFetch);
+  coursesService = inject(CoursesService);
 
   constructor() {
     this.loadCourses().then(() =>
