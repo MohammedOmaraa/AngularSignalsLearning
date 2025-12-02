@@ -1,6 +1,8 @@
 import { Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Course } from '../models/course.model';
+import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'courses-card-list',
@@ -10,4 +12,19 @@ import { Course } from '../models/course.model';
 })
 export class CoursesCardListComponent {
   courses = input.required<Course[]>({ alias: 'data' });
+
+  courseUpdated = output<Course>();
+
+  dialog = inject(MatDialog);
+
+  async onEditCourse(course: Course) {
+    const newCourse = await openEditCourseDialog(this.dialog, {
+      mode: 'update',
+      title: course.title,
+      course,
+    });
+
+    console.log(`Course edited:`, newCourse);
+    this.courseUpdated.emit(newCourse);
+  }
 }
