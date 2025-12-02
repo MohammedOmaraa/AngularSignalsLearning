@@ -4,6 +4,8 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
+import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
@@ -29,6 +31,8 @@ export class HomeComponent {
   });
 
   coursesService = inject(CoursesService);
+
+  dialog = inject(MatDialog);
 
   constructor() {
     this.loadCourses().then(() =>
@@ -66,5 +70,15 @@ export class HomeComponent {
       alert(`Error deleting Courses!`);
       console.error(err);
     }
+  }
+
+  async onAddCourse() {
+    const newCourse = await openEditCourseDialog(this.dialog, {
+      mode: 'create',
+      title: 'Create New Course',
+    });
+
+    const newCourses = [...this.courses(), newCourse];
+    this.courses.set(newCourses);
   }
 }

@@ -22,7 +22,7 @@ export class CoursesCardListComponent {
   async onEditCourse(course: Course) {
     const newCourse = await openEditCourseDialog(this.dialog, {
       mode: 'update',
-      title: course.title,
+      title: 'Update Existing Course',
       course,
     });
 
