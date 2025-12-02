@@ -15,6 +15,8 @@ export class CoursesCardListComponent {
 
   courseUpdated = output<Course>();
 
+  courseDeleted = output<string>();
+
   dialog = inject(MatDialog);
 
   async onEditCourse(course: Course) {
@@ -26,5 +28,9 @@ export class CoursesCardListComponent {
 
     console.log(`Course edited:`, newCourse);
     this.courseUpdated.emit(newCourse);
+  }
+
+  onDeleteCourse(course: Course) {
+    this.courseDeleted.emit(course.id);
   }
 }
