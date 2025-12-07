@@ -6,6 +6,7 @@ import { CoursesService } from '../services/courses.service';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MessagesService } from '../messages/messages.service';
 
 @Component({
   standalone: true,
@@ -34,6 +35,8 @@ export class HomeComponent {
 
   dialog = inject(MatDialog);
 
+  messagesService = inject(MessagesService);
+
   constructor() {
     this.loadCourses().then(() =>
       console.log(`All courses loaded:`, this.courses())
@@ -45,7 +48,7 @@ export class HomeComponent {
       const courses = await this.coursesService.loadAllCourses();
       this.courses.set(courses.sort(sortCoursesBySeqNo));
     } catch (err) {
-      alert(`Error loading Courses!`);
+      this.messagesService.showMessage(`Error loading Courses!`, 'error');
       console.error(err);
     }
   }
