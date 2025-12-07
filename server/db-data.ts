@@ -964,6 +964,12 @@ export const USERS = {
     email: 'test@angular-university.io',
     password: 'test',
     pictureUrl: 'https://lh3.googleusercontent.com/-1pUNnTB3vaA/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdn4uEc0ti8YE4Uuw6_Kz04tVe2Mg.CMID/s32-c/photo.jpg'
+  },
+  2: {
+    id: 2,
+    email: 'MohamedOmara@gmail.com',
+    password: 'MohamedOmara12345',
+    pictureUrl: 'https://scontent-hbe1-1.xx.fbcdn.net/v/t39.30808-6/550178873_1850360119209008_1460775122451239569_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeE_uUWJbyt84mBFli717ubrKlcp91Q5qSIqVyn3VDmpIhueDy88MrOVQHoZv8A04xA1WX9LRVusYWMXfAl1eqlY&_nc_ohc=KBCTLKS4goAQ7kNvwGp_Rga&_nc_oc=AdmzRSLPJKbGWDk3sTCDLVJCjxqV9ePlgiy6w_eHlr0Tcz9qDpZZUo9nsOhnjAN_As4&_nc_zt=23&_nc_ht=scontent-hbe1-1.xx&_nc_gid=j5OcmThbXbqgKHX8UhxsKg&oh=00_Afl05eoa9A1e0jBUU79M8gtd7rhdmvXolzFADqyqxwZEiw&oe=693B8EF5',
   }
 
 };
