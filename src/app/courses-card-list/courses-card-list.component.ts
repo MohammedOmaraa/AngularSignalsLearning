@@ -20,6 +20,10 @@ export class CoursesCardListComponent {
   dialog = inject(MatDialog);
 
   async onEditCourse(course: Course) {
+    if (!course) {
+      return;
+    }
+
     const newCourse = await openEditCourseDialog(this.dialog, {
       mode: 'update',
       title: 'Update Existing Course',
